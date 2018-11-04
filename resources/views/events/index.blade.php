@@ -3,6 +3,11 @@
 @section('content')
 
 <div id="events">
+	@if(session()->has('sucess'))
+	<div class="alert alert-danger">
+		{{ session()->get('sucess') }}
+	</div>
+	@endif
 	<h3>Eventos Disponíveis</h3>
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
@@ -80,9 +85,11 @@
 				<td style="text-align: center; color: red">{{  $subscription->activity->check_in == 1 ? "Realizado" : "Não Realizado" }}</td>
 				<td style="text-align: center;"><button class="btn btn-outline-info" disabled title="Check-in deve ser realizado!">Emitir</button></td>
 				<td style="text-align: center;"><a href="http://localhost:8080/activities/{{$subscription->activity->id}}">Ir para Atividade</a></td>
-				{{ Form::open(['route'=>['subscriptions.destroy',$subscription->id], 'method' => 'DELETE', 'onsubmit' => 'deleteConfirmation();']) }}
-				<td>{{ Form::submit('Cancelar', ['class' => 'btn btn-outline-danger']) }}</td>
-				{{ Form::close() }}
+				<td>
+					{{ Form::open(['route'=>['subscriptions.destroy',$subscription->id], 'method' => 'DELETE', 'onsubmit' => 'deleteConfirmation();']) }}
+					{{ Form::submit('Cancelar', ['class' => 'btn btn-outline-danger']) }}
+					{{ Form::close() }}
+				</td>
 			</tr>
 			@empty
 			<h5 style="color: red;">Não Possui Registros Cadastrados!</h5>

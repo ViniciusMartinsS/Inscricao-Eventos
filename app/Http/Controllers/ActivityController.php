@@ -45,9 +45,10 @@ class ActivityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-         return view('activities.show', ['activity' => Activity::find($id)] );
+        $user_id = $request->user()->id;
+        return view('activities.show', ['activity' => Activity::find($id), 'subscriptions' => Subscription::where('user_id', $user_id)->get()]);
     }
 
     /**

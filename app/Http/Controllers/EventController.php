@@ -14,10 +14,10 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       // return Subscription::with('activity')->where('user_id', 3)->paginate(10); 
-        return view('events.index', ['events' => Event::paginate(10), 'subscriptions' => Subscription::with('activity', 'activity.event')->where('user_id', 3)->get()]) ;
+       $user_id = $request->user()->id;
+        return view('events.index', ['events' => Event::paginate(10), 'subscriptions' => Subscription::with('activity', 'activity.event')->where('user_id', $user_id)->get()]) ;
     }
 
     /**

@@ -2,15 +2,25 @@
 @section('title', 'Painel de Controle - Restrito')
 
 @section('content')
+@if(session()->has('subscriber'))
+<div class="alert alert-success">
+  {{ session()->get('subscriber') }}
+</div>
+@elseif(session()->has('sucess'))
+<div class="alert alert-danger">
+  {{ session()->get('sucess') }}
+</div>
+@endif
+
 <h3>Atividades Disponíveis</h3>
 <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Atividades - {{$activities[0]->event->name}}</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="http://localhost:8080/events">Voltar Eventos</a>
-    </li>
-  </ul>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Atividades - {{$activities[0]->event->name}}</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="http://localhost:8080/events">Voltar Eventos</a>
+  </li>
+</ul>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -40,12 +50,14 @@
       <td style="text-align: center;">15</td>
       <td style="text-align: center;">0</td>
       <td style="text-align: center;"><a href="http://localhost:8080/activities/{{$activity->id}}" >Ver Mais</a></td>
-      {{ Form::open(['action' => 'SubscriptionController@store']) }}
-      {{ Form::hidden('user_id', '3') }}
-      {{ Form::hidden('activity_id', $activity->id) }}
-      <td>{{ Form::submit('Inscreva-se', ['class' => 'btn btn-outline-success']) }}</td>
-      {{ Form::close() }}
+      <td>
+        {{ Form::open(['action' => 'SubscriptionController@store']) }}
+        {{ Form::hidden('activity_id', $activity->id) }}
+        {{ Form::submit('Inscreva-se', ['class' => 'btn btn-outline-success']) }}
+        {{ Form::close() }}
+      </td>
       @empty
+      
       @endforelse
     </tbody>
   </table>

@@ -17,15 +17,38 @@
 
 <b>Mapa do Local:</b><br>
 
-<iframe width="400" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{ $activity->place }}&key=AIzaSyCcZZ8U-w804ErGYMZKE7ADdW-WcEzwKak"> </iframe>    
+<iframe width="400" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{ $activity->place }}&key=AIzaSyCcZZ8U-w804ErGYMZKE7ADdW-WcEzwKak"> </iframe><br>
 
-{{ Form::open(['action' => 'SubscriptionController@store']) }}
-{{ Form::hidden('user_id', '3') }}
-{{ Form::hidden('activity_id', $activity->id) }}
-<td>{{ Form::submit('Inscreva-se', ['class' => 'btn btn-outline-success']) }}</td>
+@forelse($subscriptions as $subscription)
+@if($subscription->activity_id == $activity->id)
+{{ Form::open(['route'=>['subscriptions.destroy',$subscription->id], 'method' => 'DELETE', 'onsubmit' => 'deleteConfirmation();']) }}
+{{ Form::submit('Cancelar Inscrição', ['class' => 'btn btn-outline-danger']) }}
 <a href="#" onclick="history.back();" class="btn btn-outline-secondary"> Voltar</a>
 {{ Form::close() }}
+@else
+{{ Form::open(['action' => 'SubscriptionController@store']) }}
+{{ Form::hidden('activity_id', $activity->id) }}
+{{ Form::submit('Inscreva-se', ['class' => 'btn btn-outline-success']) }}
+<a href="#" onclick="history.back();" class="btn btn-outline-secondary"> Voltar</a>
+{{ Form::close() }}
+@endif
+@empty
+{{ Form::open(['action' => 'SubscriptionController@store']) }}
+{{ Form::hidden('activity_id', $activity->id) }}
+{{ Form::submit('Inscreva-se', ['class' => 'btn btn-outline-success']) }}
+<a href="#" onclick="history.back();" class="btn btn-outline-secondary"> Voltar</a>
+{{ Form::close() }}
+@endforelse
 
-
+<br>
+@if(session()->has('sucess'))
+<div class="alert alert-danger">
+	{{ session()->get('sucess') }}
+</div>
+@elseif(session()->has('subscriber'))
+<div class="alert alert-success">
+	{{ session()->get('subscriber') }}
+</div>
+@endif
 
 @endsection

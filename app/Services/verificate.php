@@ -40,23 +40,25 @@ class Verificate
 		$same_time = 0;
 
 		#Inscrição que o usuário deseja fazer
-		$event_time = Activity::with('schedule')
-		->where('id', $activity_id)
+		$event_time = Activity::where('id', $activity_id)
 		->get();
 
 		#Inscrições do usuário 
-		$user_subscriptions = Subscription::join('activities', 'subscriptions.activity_id', '=', 'activities.id')
-		->join('schedules', 'activities.schedule_id', '=', 'schedules.id')
+		$user_subscriptions = Subscription::where('user_id', $user_id)
+		->join('activities', 'subscriptions.activity_id', '=', 'activities.id')
 		->get();
 
-		foreach ($user_subscriptions as $user_subscription) {
-			if ($event_time[0]->beginning_date == $user_subscription->beginning_date
-					&& $event_time[0]->schedule->name == $user_subscription->name 
-						|| $event_time[0]->schedule->name == "VLI$user_subscription->name") 
-				$same_time = 1;
+		if(isset($user_subscriptions[0]->beginning_datetime)){
+			foreach ($user_subscriptions as $user_subscription) {
+				print_r($user_subscription);
+				if ($event_time[0]->beginning_datetime == $user_subscription->beginning_datetime) 
+					$same_time = 1;
+			}
 		}
 
-			return $same_time;
+		return $same_time;
 	}
 
 }
+
+
