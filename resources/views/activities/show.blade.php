@@ -17,7 +17,7 @@
 
 <b>Mapa do Local:</b><br>
 
-<iframe width="400" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{ $activity->place }}&key=AIzaSyCcZZ8U-w804ErGYMZKE7ADdW-WcEzwKak"> </iframe><br>
+<iframe width="400" height="300" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/search?q={{ $activity->place }}&key=googleapikey"> </iframe><br>
 
 @forelse($subscriptions as $subscription)
 @if($subscription->activity_id == $activity->id)
